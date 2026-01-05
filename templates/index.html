@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR Generator</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="page">
+    <div class="card" id="card">
+      <header>
+        <h1>QR Code Generator</h1>
+        <p class="sub">Fast, shareable QR codes — download and use.</p>
+      </header>
+
+      <form id="qr-form" class="controls">
+        <div class="field">
+          <label for="text">Text / URL</label>
+          <input id="text" name="text" type="text" placeholder="Enter text or URL" required>
+        </div>
+        <div class="row">
+          <div class="field small">
+            <label for="size">Box size</label>
+            <input id="size" name="size" type="number" value="10" min="1" max="40">
+          </div>
+          <div class="actions">
+            <button id="generate-btn" type="submit" class="btn">Generate</button>
+            <a id="download-btn" class="btn muted" style="display:none;" download="qrcode.png">Download</a>
+          </div>
+        </div>
+      </form>
+
+      <section id="result" class="result">
+        <h2>Preview</h2>
+        <div class="preview">
+          <img id="qr-image" alt="QR preview" src="" />
+          <div id="spinner" class="spinner" style="display:none"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="/static/js/main.js"></script>
+</body>
+</html>

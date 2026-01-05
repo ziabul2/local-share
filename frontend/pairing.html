@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Device Pairing - Local Network Sync</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height:100vh; display:flex; align-items:center; justify-content:center; font-family:system-ui; }
+    .container { background:#fff; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.3); padding:40px; max-width:600px; width:90%; }
+    h1 { font-size:32px; color:#333; margin-bottom:10px; text-align:center; }
+    .subtitle { text-align:center; color:#666; margin-bottom:30px; font-size:14px; }
+    
+    .panel { background:#f5f5f5; border:2px dashed #ddd; border-radius:12px; padding:30px; text-align:center; margin-bottom:30px; }
+    .qr-container { display:flex; flex-direction:column; align-items:center; }
+    #pairing-qr { max-width:300px; width:100%; height:auto; margin:20px 0; border-radius:8px; }
+    
+    .device-info { background:#e8f5e9; border-left:4px solid #4caf50; padding:15px; border-radius:8px; margin-top:20px; text-align:left; }
+    .device-info-row { display:flex; justify-content:space-between; margin:8px 0; font-size:13px; }
+    .device-info-label { color:#666; font-weight:600; }
+    .device-info-value { color:#333; font-family:monospace; }
+    
+    .button { background:#667eea; color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; margin-top:10px; }
+    .button:hover { background:#5568d3; }
+    .button-secondary { background:#999; }
+    .button-secondary:hover { background:#777; }
+    
+    .status { text-align:center; margin:20px 0; padding:15px; border-radius:8px; }
+    .status-pending { background:#fff3cd; color:#856404; border:1px solid #ffeeba; }
+    .status-confirmed { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+    .status-error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
+    
+    .devices-list { background:#f5f5f5; border-radius:8px; padding:20px; margin-top:30px; }
+    .devices-list h3 { color:#333; margin-bottom:15px; font-size:16px; }
+    .device-card { background:#fff; border-left:4px solid #667eea; padding:15px; margin-bottom:10px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; }
+    .device-card-name { font-weight:600; color:#333; }
+    .device-card-meta { font-size:12px; color:#999; margin-top:4px; }
+    .revoke-btn { background:#ff6b6b; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:11px; }
+    .revoke-btn:hover { background:#ff5252; }
+    
+    .instructions { background:#f9f9f9; border:1px solid #ddd; border-radius:8px; padding:20px; margin-top:30px; }
+    .instructions h3 { color:#667eea; margin-bottom:10px; }
+    .instructions ol { margin-left:20px; color:#666; font-size:13px; line-height:1.8; }
+    .instructions li { margin-bottom:8px; }
+    
+    .copy-button { background:#ddd; color:#333; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:11px; margin-left:8px; }
+    .copy-button:hover { background:#ccc; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔗 Device Pairing</h1>
+    <p class="subtitle">Pair your phone with this PC over local Wi-Fi for secure file sync</p>
+    
+    <!-- Pairing QR Code Section -->
+    <div class="panel" id="qr-section">
+      <div class="qr-container">
+        <h2 style="font-size:18px; margin-bottom:15px; color:#333;">Scan QR to Pair</h2>
+        <p style="color:#666; font-size:13px; margin-bottom:15px;">Use your phone to scan this code</p>
+        <div id="pairing-qr-placeholder" style="width:300px; height:300px; background:#eee; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#999;">
+          <span>Loading QR...</span>
+        </div>
+        <img id="pairing-qr" src="" alt="Pairing QR Code" style="display:none;">
+        
+        <div class="device-info">
+          <div class="device-info-row">
+            <span class="device-info-label">🖥️ Device ID:</span>
+            <span class="device-info-value" id="device-id">-</span>
+          </div>
+          <div class="device-info-row">
+            <span class="device-info-label">🌐 Local IP:</span>
+            <span class="device-info-value" id="local-ip">Detecting...</span>
+          </div>
+          <div class="device-info-row">
+            <span class="device-info-label">🔒 Status:</span>
+            <span class="device-info-value" id="pairing-status">Pending</span>
+          </div>
+        </div>
+        
+        <button class="button" onclick="regenerateQR()" style="margin-top:20px;">🔄 Regenerate QR</button>
+      </div>
+    </div>
+    
+    <!-- Paired Devices Section -->
+    <div class="devices-list" id="devices-section" style="display:none;">
+      <h3>📱 Paired Devices</h3>
+      <div id="devices-container">
+        <p style="color:#999; text-align:center;">No paired devices yet</p>
+      </div>
+    </div>
+    
+    <!-- Instructions -->
+    <div class="instructions">
+      <h3>📖 How to Pair Your Phone</h3>
+      <ol>
+        <li>Make sure your phone is on the same Wi-Fi network as this PC</li>
+        <li>Open this page on your phone or scan the QR code above</li>
+        <li>On your phone, tap <strong>"Confirm Pairing"</strong></li>
+        <li>Once confirmed, files will automatically sync between devices</li>
+        <li>You can manage synced photos in the File Explorer</li>
+      </ol>
+    </div>
+  </div>
+  
+  <script>
+    let pairingToken = null;
+    let deviceId = null;
+    let currentPairingData = null;
+    
+    async function generateQR() {
+      try {
+        const response = await fetch('/api/pairing/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ device_name: 'My PC' })
+        });
+        const data = await response.json();
+        
+        if (data.qr_data_url) {
+          // Show QR image
+          const img = document.getElementById('pairing-qr');
+          img.src = data.qr_data_url;
+          img.style.display = 'block';
+          
+          const placeholder = document.getElementById('pairing-qr-placeholder');
+          if (placeholder) placeholder.style.display = 'none';
+          
+          // Store pairing token and device ID
+          pairingToken = data.pairing_token;
+          deviceId = data.device_id;
+          currentPairingData = data.pairing_data;
+          
+          // Display device info
+          document.getElementById('device-id').textContent = deviceId.substring(0, 8) + '...';
+          document.getElementById('local-ip').textContent = data.pairing_data.ip || 'Detecting...';
+          
+          console.log('Pairing QR generated:', data.pairing_url);
+          console.log('Direct pairing link:', data.pairing_url);
+          
+          // Store pairing URL for reference
+          window.pairingUrl = data.pairing_url;
+          
+          // Make QR clickable to copy URL or open pairing
+          document.getElementById('pairing-qr').onclick = (e) => {
+            e.preventDefault();
+            showPairingConfirmation(data.pairing_data, data.pairing_url);
+          };
+          
+          // Start polling for paired devices
+          pollPairedDevices();
+        }
+      } catch (e) {
+        console.error('Error generating QR:', e);
+      }
+    }
+    
+    function showPairingConfirmation(pairingData, pairingUrl) {
+      // Use the URL from QR code for direct navigation
+      const confirmUrl = pairingUrl || window.pairingUrl;
+      
+      // Check if we're on mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // On mobile, navigate directly to pairing confirmation
+        window.location.href = confirmUrl;
+      } else {
+        // On desktop, show a modal with the pairing link
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+          position:fixed; top:0; left:0; right:0; bottom:0;
+          background:rgba(0,0,0,0.5); display:flex; align-items:center;
+          justify-content:center; z-index:10000;
+        `;
+        
+        const content = document.createElement('div');
+        content.style.cssText = `
+          background:#fff; border-radius:12px; padding:30px;
+          max-width:450px; width:90%; box-shadow:0 10px 40px rgba(0,0,0,0.3);
+        `;
+        
+        content.innerHTML = `
+          <h2 style="margin-bottom:10px;">📱 Open on Phone</h2>
+          <p style="color:#666; margin-bottom:20px;">On your phone, open this link to confirm pairing:</p>
+          <div style="
+            background:#f5f5f5; border:1px solid #ddd; border-radius:8px;
+            padding:12px; margin-bottom:15px; word-break:break-all;
+            font-family:monospace; font-size:12px; color:#333;
+            max-height:100px; overflow-y:auto;
+          ">${confirmUrl}</div>
+          <button onclick="this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement); navigator.clipboard.writeText('${confirmUrl}'); alert('Link copied to clipboard');" style="
+            width:100%; padding:12px; background:#667eea;
+            color:#fff; border:none; border-radius:6px; cursor:pointer;
+            font-weight:600; margin-bottom:10px;
+          ">📋 Copy Link</button>
+          <a href="${confirmUrl}" target="_blank" style="
+            display:block; text-align:center;
+            background:#4CAF50; color:#fff; padding:12px;
+            border-radius:6px; text-decoration:none; font-weight:600;
+            margin-bottom:10px;
+          ">🔗 Open Link on Phone</a>
+          <button onclick="this.parentElement.parentElement.removeChild(this.parentElement);" style="
+            width:100%; padding:10px; background:#f0f0f0;
+            border:none; border-radius:6px; cursor:pointer;
+          ">Close</button>
+        `;
+        
+        modal.appendChild(content);
+        modal.onclick = (e) => {
+          if (e.target === modal) modal.removeChild(content);
+        };
+        document.body.appendChild(modal);
+      }
+    }
+    
+    async function pollPairedDevices() {
+      try {
+        const response = await fetch('/api/pairing/devices');
+        const data = await response.json();
+        
+        if (data.devices && data.devices.length > 0) {
+          renderPairedDevices(data.devices);
+          document.getElementById('devices-section').style.display = 'block';
+          document.getElementById('pairing-status').textContent = 'Paired ✓';
+        }
+        
+        // Poll every 3 seconds
+        setTimeout(pollPairedDevices, 3000);
+      } catch (e) {
+        console.warn('Error polling devices:', e);
+        setTimeout(pollPairedDevices, 5000);
+      }
+    }
+    
+    function renderPairedDevices(devices) {
+      const container = document.getElementById('devices-container');
+      
+      if (devices.length === 0) {
+        container.innerHTML = '<p style="color:#999; text-align:center;">No paired devices yet</p>';
+        return;
+      }
+      
+      container.innerHTML = devices.map(dev => `
+        <div class="device-card">
+          <div>
+            <div class="device-card-name">📱 ${dev.phone_device_name || 'Unknown Device'}</div>
+            <div class="device-card-meta">Paired: ${new Date(dev.confirmed_at).toLocaleString()}</div>
+            <div class="device-card-meta">Files synced: ${(dev.synced_files || []).length}</div>
+          </div>
+          <button class="revoke-btn" onclick="revokePairing('${dev.token || dev.device_id}')">Revoke</button>
+        </div>
+      `).join('');
+    }
+    
+    function regenerateQR() {
+      generateQR();
+    }
+    
+    async function revokePairing(token) {
+      if (!confirm('Remove this paired device?')) return;
+      
+      try {
+        const response = await fetch(`/api/pairing/revoke/${token}`, { method: 'POST' });
+        const data = await response.json();
+        if (data.ok) {
+          alert('Device pairing revoked');
+          pollPairedDevices();
+        }
+      } catch (e) {
+        console.error('Error revoking pairing:', e);
+      }
+    }
+    
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', generateQR);
+  </script>
+</body>
+</html>

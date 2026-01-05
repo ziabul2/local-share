@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Confirm Device Pairing</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px 30px;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .pairing-code {
+      background: #f5f5f5;
+      border: 2px solid #667eea;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .pairing-code-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .pairing-code-value {
+      font-family: monospace;
+      font-size: 18px;
+      font-weight: bold;
+      color: #667eea;
+      word-break: break-all;
+      user-select: all;
+    }
+
+    .device-info {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .device-info-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .device-info-icon {
+      font-size: 24px;
+      margin-right: 15px;
+    }
+
+    .device-info-text {
+      flex: 1;
+    }
+
+    .device-info-label {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 4px;
+    }
+
+    .device-info-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .button-primary {
+      background: #667eea;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .button-primary:hover {
+      background: #5568d3;
+    }
+
+    .button-primary:active {
+      transform: scale(0.98);
+    }
+
+    .button-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .button-secondary {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .button-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .status {
+      text-align: center;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .status-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .status-loading {
+      background: #e2e3e5;
+      color: #383d41;
+    }
+
+    .security-note {
+      background: #fffbea;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #856404;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔗 Pair with PC</h1>
+      <p>Confirm this device pairing to sync photos and files</p>
+    </div>
+
+    <div id="status-message"></div>
+
+    <!-- Pairing Token Display -->
+    <div class="pairing-code" id="token-section">
+      <div class="pairing-code-label">Pairing Token</div>
+      <div class="pairing-code-value" id="pairing-token">Loading...</div>
+    </div>
+
+    <!-- Device Information -->
+    <div class="device-info">
+      <div class="device-info-row">
+        <div class="device-info-icon">🖥️</div>
+        <div class="device-info-text">
+          <div class="device-info-label">Server Device</div>
+          <div class="device-info-value" id="server-name">Loading...</div>
+        </div>
+      </div>
+      <div class="device-info-row">
+        <div class="device-info-icon">🌐</div>
+        <div class="device-info-text">
+          <div class="device-info-label">Local Network IP</div>
+          <div class="device-info-value" id="server-ip">Loading...</div>
+        </div>
+      </div>
+      <div class="device-info-row">
+        <div class="device-info-icon">📱</div>
+        <div class="device-info-text">
+          <div class="device-info-label">Your Device Name</div>
+          <div class="device-info-value" id="phone-id">Detecting...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone Device Name Input -->
+    <div class="input-group">
+      <label for="device-name">Phone Device Name (optional)</label>
+      <input type="text" id="device-name" placeholder="e.g., My iPhone, Samsung Galaxy" value="">
+    </div>
+
+    <!-- Confirm Button -->
+    <button class="button button-primary" id="confirm-btn" onclick="confirmPairing()">
+      ✓ Confirm Pairing
+    </button>
+    <button class="button button-secondary" onclick="goBack()">
+      Cancel
+    </button>
+
+    <!-- Security Note -->
+    <div class="security-note">
+      <strong>🔒 Secure Connection:</strong> This pairing uses encrypted communication over your local Wi-Fi network.
+      Only devices on the same network can sync files.
+    </div>
+  </div>
+
+  <script>
+    let pairingData = null;
+    let phoneDeviceId = null;
+
+    function getQueryParam(name) {
+      const url = new URL(window.location);
+      return url.searchParams.get(name);
+    }
+
+    async function loadPairingData() {
+      try {
+        // Get pairing data from URL parameters (this is how QR code will pass it)
+        const token = getQueryParam('token');
+        const deviceId = getQueryParam('device_id');
+        const pcName = getQueryParam('pc_name') || 'My PC';
+        const created = getQueryParam('created');
+
+        if (!token) {
+          // Try legacy method (JSON in data parameter)
+          let data = getQueryParam('data');
+          if (data && sessionStorage.getItem('pairingData')) {
+            data = sessionStorage.getItem('pairingData');
+            try {
+              pairingData = JSON.parse(data);
+            } catch (e) {
+              pairingData = null;
+            }
+          } else if (data) {
+            try {
+              pairingData = JSON.parse(decodeURIComponent(data));
+              sessionStorage.setItem('pairingData', JSON.stringify(pairingData));
+            } catch (e) {
+              pairingData = null;
+            }
+          }
+        } else {
+          // New method: URL parameters from QR code
+          // Get server IP from current page URL or from QR parameter
+          const currentUrl = new URL(window.location);
+          const serverIp = currentUrl.hostname;
+          const serverPort = currentUrl.port || 5000;
+
+          pairingData = {
+            pairing_token: token,
+            device_id: deviceId,
+            device_name: pcName,
+            ip: serverIp,
+            port: serverPort,
+            created_at: created,
+            protocol: 'https'
+          };
+
+          // Auto-fill device name field with phone name if available
+          const phoneDeviceName = localStorage.getItem('phoneDeviceName');
+          if (phoneDeviceName) {
+            document.getElementById('device-name').value = phoneDeviceName;
+          } else {
+            // Set default based on user agent
+            const userAgent = navigator.userAgent.toLowerCase();
+            let defaultName = 'Phone';
+            if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+              defaultName = 'iPhone';
+            } else if (userAgent.includes('android')) {
+              defaultName = 'Android Phone';
+            }
+            document.getElementById('device-name').value = defaultName;
+          }
+
+          // Auto-confirm if requested
+          const autoConfirm = getQueryParam('auto_confirm');
+          if (autoConfirm === 'true') {
+            // Wait a bit and auto-confirm
+            setTimeout(() => {
+              confirmPairing();
+            }, 1000);
+            return;
+          }
+        }
+
+        if (pairingData) {
+          // Display pairing information
+          document.getElementById('pairing-token').textContent = pairingData.pairing_token.substring(0, 16) + '...';
+          document.getElementById('server-name').textContent = pairingData.device_name || 'PC';
+          document.getElementById('server-ip').textContent = pairingData.ip + ':' + pairingData.port;
+
+          // Generate phone device ID
+          phoneDeviceId = 'phone_' + Date.now();
+          document.getElementById('phone-id').textContent = phoneDeviceId.substring(0, 16) + '...';
+        } else {
+          showStatus('No pairing data found. Please scan QR code again.', 'error');
+          document.getElementById('token-section').style.display = 'none';
+        }
+      } catch (e) {
+        console.error('Error loading pairing data:', e);
+        showStatus('Error loading pairing information', 'error');
+      }
+    }
+
+    function showStatus(message, type = 'loading') {
+      const el = document.getElementById('status-message');
+      el.textContent = message;
+      el.className = 'status status-' + type;
+      if (type !== 'loading') {
+        el.style.display = 'block';
+      }
+    }
+
+    async function confirmPairing() {
+      if (!pairingData) {
+        showStatus('Pairing data not found', 'error');
+        return;
+      }
+
+      const deviceName = document.getElementById('device-name').value.trim() || 'Phone';
+      document.getElementById('confirm-btn').disabled = true;
+      showStatus('Confirming pairing...', 'loading');
+
+      try {
+        // Save device name for future reference
+        localStorage.setItem('phoneDeviceName', deviceName);
+
+        // Send confirmation to server
+        const serverUrl = `${pairingData.protocol || 'https'}://${pairingData.ip}:${pairingData.port}`;
+
+        const response = await fetch(`${serverUrl}/api/pairing/confirm`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pairing_token: pairingData.pairing_token,
+            phone_device_id: phoneDeviceId,
+            phone_device_name: deviceName
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.ok) {
+          showStatus('✓ Pairing confirmed! Redirecting to admin panel...', 'success');
+
+          // Auto-redirect to admin panel after 1.5 seconds
+          setTimeout(() => {
+            // Redirect to admin panel to see active devices
+            window.location.href = `${serverUrl}/admin`;
+          }, 1500);
+        } else {
+          showStatus('Pairing failed: ' + (data.error || 'Unknown error'), 'error');
+          document.getElementById('confirm-btn').disabled = false;
+        }
+      } catch (e) {
+        console.error('Error confirming pairing:', e);
+        showStatus('Connection error: ' + e.message, 'error');
+        document.getElementById('confirm-btn').disabled = false;
+      }
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', loadPairingData);
+  </script>
+</body>
+
+</html>

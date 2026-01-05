@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Permissions Education</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="page">
+    <div class="card">
+      <header>
+        <h1>Permissions Education</h1>
+        <p class="sub">Learn which permissions are important and how to stay safe.</p>
+      </header>
+
+      <section class="controls">
+        <div class="field">
+          <label for="platform-select">Choose Platform</label>
+          <select id="platform-select" style="padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.01); color:var(--accent); width:100%; max-width:200px;">
+            <option value="android">Android</option>
+            <option value="ios">iOS</option>
+          </select>
+        </div>
+        <button class="btn muted" id="back-btn" style="margin-top:8px;">Back to Paths</button>
+      </section>
+
+      <section id="dangerous-perms" style="margin-top: 18px;">
+        <h3>🔒 Dangerous / Sensitive Permissions</h3>
+        <div id="perms-list" style="display:grid; gap:12px;"></div>
+      </section>
+
+      <section id="tips" style="margin-top: 24px; padding: 12px; background:rgba(110,168,254,0.1); border-radius:8px; border-left:3px solid var(--accent);">
+        <h3 style="margin-top:0;">Security Tips</h3>
+        <ul id="tips-list" style="margin:8px 0; padding-left:20px;">
+        </ul>
+      </section>
+
+      <section id="permission-detail" style="display:none; margin-top:24px; padding:12px; background:rgba(255,255,255,0.02); border-radius:8px;">
+        <button id="close-detail" class="btn muted" style="float:right;">Close</button>
+        <h4 id="detail-name" style="margin:0;">Permission Name</h4>
+        <p id="detail-desc" style="color:rgba(230,238,248,0.7); margin:8px 0;">Description</p>
+        <h5>Why it matters:</h5>
+        <ul id="detail-points" style="margin:8px 0; padding-left:20px;"></ul>
+      </section>
+    </div>
+  </main>
+  <script>const SESSION_TOKEN = "{{ token }}";</script>
+  <script src="/static/js/permissions.js"></script>
+</body>
+</html>

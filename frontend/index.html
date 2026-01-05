@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR Generator</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="page">
+    <div class="card" id="card">
+      <header>
+        <h1>QR Code Generator</h1>
+        <p class="sub">Fast, shareable QR codes — download and use.</p>
+      </header>
+
+      <form id="qr-form" class="controls">
+        <div class="field">
+          <label for="text">Text / URL</label>
+          <input id="text" name="text" type="text" placeholder="Enter text or URL" required>
+        </div>
+        <div class="row">
+          <div class="field small">
+            <label for="size">Box size</label>
+            <input id="size" name="size" type="number" value="10" min="1" max="40">
+          </div>
+          <div class="actions">
+            <button id="generate-btn" type="submit" class="btn">Generate</button>
+            <a id="download-btn" class="btn muted" style="display:none;" download="qrcode.png">Download</a>
+          </div>
+        </div>
+      </form>
+
+      <section id="result" class="result">
+        <h2>Preview</h2>
+        <div class="preview">
+          <img id="qr-image" alt="QR preview" src="" />
+          <div id="spinner" class="spinner" style="display:none"></div>
+        </div>
+      </section>
+
+      <section id="session-qr" style="margin-top:24px; padding:12px; background:rgba(110,168,254,0.1); border-radius:8px;">
+        <h3 style="margin-top:0;">📱 Learning Session</h3>
+        <p style="color:rgba(230,238,248,0.7);">Scan this code with your phone to start the educational session:</p>
+        <div style="text-align:center; padding:12px;">
+          <img id="session-qr-image" src="{{ qr_data_url }}" alt="Session QR code" style="max-width:260px; height:auto; border:2px solid var(--accent); padding:8px; background:#fff; border-radius:8px;" />
+        </div>
+      </section>
+      
+      <section style="margin-top:24px; padding:12px; background:rgba(76,175,80,0.1); border-radius:8px;">
+        <h3 style="margin-top:0;">🔗 Local Network Sync</h3>
+        <p style="color:rgba(230,238,248,0.7);">Pair devices over local Wi-Fi for secure file sync and automatic photo backup:</p>
+        <a href="/pairing" style="display:inline-block; margin-top:12px; padding:10px 20px; background:rgba(76,175,80,0.8); color:#fff; border-radius:6px; text-decoration:none; font-weight:600;">
+          🔒 Start Device Pairing
+        </a>
+      </section>
+    </div>
+  </main>
+  <script src="/static/js/main.js"></script>
+</body>
+</html>

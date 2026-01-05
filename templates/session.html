@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR Session — Learning Paths</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="page">
+    <div class="card">
+      <header>
+        <h1>Learning Paths</h1>
+        <p class="sub">Choose a path to learn about storage, permissions, and security.</p>
+      </header>
+
+      <section class="paths">
+        <button class="btn" id="storage-btn">Storage Explorer</button>
+        <button class="btn muted" id="permission-btn">Permission Tutorial</button>
+        <button class="btn muted" id="security-btn">Security Education</button>
+      </section>
+
+      <section id="content" style="margin-top:16px">
+        <div id="storage" style="display:none">
+          <h3>Storage Explorer</h3>
+          <p>Select files from your phone to upload to the learning server (consent required).</p>
+          <input id="file-input" type="file" multiple>
+          <div style="margin-top:12px">
+            <button id="upload-btn" class="btn">Upload Selected</button>
+          </div>
+          <h4 style="margin-top:12px">Uploaded files</h4>
+          <ul id="uploaded-list"></ul>
+        </div>
+
+        <div id="permission" style="display:none">
+          <h3>Permission Tutorial</h3>
+          <p>This section explains how mobile OS permissions work and why apps request storage access. Always grant permissions carefully; the demo only uploads files you explicitly choose.</p>
+        </div>
+
+        <div id="security" style="display:none">
+          <h3>Security Education</h3>
+          <p>Learn about best practices: keep sensitive files private, use strong device locks, and only allow connections you trust. This demo uses a short-lived QR session token to limit access.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>const SESSION_TOKEN = "{{ token }}";</script>
+  <script src="/static/js/session.js"></script>
+</body>
+</html>

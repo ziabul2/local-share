@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camera & Storage</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="page">
+    <div class="card">
+      <header>
+        <h1>Camera & File Storage</h1>
+        <p class="sub">Capture photos and manage your files.</p>
+      </header>
+
+      <!-- Permission Request Modal -->
+      <div id="permission-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:999;">
+        <div style="background:var(--bg1); padding:24px; border-radius:12px; max-width:320px; text-align:center; border:1px solid rgba(255,255,255,0.1);">
+          <h3 style="margin-top:0;">Request Permissions</h3>
+          <p style="color:rgba(230,238,248,0.7); font-size:13px; margin:12px 0;">
+            This app needs access to your camera and storage to function.
+          </p>
+          <div style="display:grid; gap:8px;">
+            <button id="grant-perms-btn" class="btn">Grant Access</button>
+            <button id="skip-perms-btn" class="btn muted">Skip for Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Camera Section -->
+      <section id="camera-section" style="margin-bottom:24px;">
+        <h3>Camera</h3>
+        <div style="position:relative; background:#000; border-radius:8px; overflow:hidden; aspect-ratio:4/3; max-height:360px;">
+          <video id="camera-feed" autoplay playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+          <div id="camera-placeholder" style="display:none; width:100%; height:100%; background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center; color:rgba(230,238,248,0.5);">
+            Camera not available
+          </div>
+        </div>
+        <div style="margin-top:8px; display:flex; gap:8px;">
+          <button id="capture-btn" class="btn" style="flex:1;">📸 Capture</button>
+          <button id="toggle-camera-btn" class="btn muted" style="flex:1;">Stop Camera</button>
+        </div>
+      </section>
+
+      <!-- Canvas for captured photos (hidden) -->
+      <canvas id="photo-canvas" style="display:none;"></canvas>
+
+      <!-- Captured Photos -->
+      <section id="photos-section" style="margin-bottom:24px;">
+        <h3>Captured Photos</h3>
+        <div id="photos-grid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px;">
+          <div style="padding:12px; text-align:center; color:rgba(230,238,248,0.5); font-size:13px;">No photos yet</div>
+        </div>
+      </section>
+
+      <!-- File Upload Section -->
+      <section id="file-section" style="margin-bottom:24px;">
+        <h3>Upload Files</h3>
+        <input id="file-input" type="file" multiple style="width:100%; padding:8px; border:1px dashed rgba(110,168,254,0.3); border-radius:8px; background:rgba(255,255,255,0.01); color:var(--accent); cursor:pointer;">
+        <button id="upload-btn" class="btn" style="width:100%; margin-top:8px;">Upload</button>
+      </section>
+
+      <!-- File Browser -->
+      <section id="files-section">
+        <h3>Files in Storage</h3>
+        <div style="background:rgba(255,255,255,0.01); border-radius:8px; max-height:240px; overflow-y:auto;">
+          <ul id="file-list" style="list-style:none; padding:0; margin:0;">
+            <li style="padding:12px; color:rgba(230,238,248,0.5); font-size:13px;">No files yet</li>
+          </ul>
+        </div>
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button id="refresh-files-btn" class="btn muted" style="flex:1;">Refresh</button>
+          <button id="back-to-paths-btn" class="btn muted" style="flex:1;">Back</button>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>const SESSION_TOKEN = "{{ token }}";</script>
+  <script src="/static/js/camera.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+{
+  "n-Nz0YRDUw0IZegArEZcxf2dtbu7K9TS": {
+    "device_id": "e616cfa1686217c9",
+    "device_name": "My PC",
+    "ip": "192.168.100.7",
+    "port": 5000,
+    "paired_at": "2025-12-23T17:00:44.627386",
+    "expires_at": "2026-01-22T17:00:44.627394",
+    "status": "pending",
+    "synced_files": [],
+    "last_sync": null
+  },
+  "-sEkS_XklCdP4pGYUT1NQCC7z2eTN63Q": {
+    "device_id": "389f4e6ac292a74c",
+    "device_name": "My PC",
+    "ip": "192.168.100.7",
+    "port": 5000,
+    "paired_at": "2025-12-23T17:01:24.396822",
+    "expires_at": "2026-01-22T17:01:24.396824",
+    "status": "pending",
+    "synced_files": [],
+    "last_sync": null
+  },
+  "b_A33CZY6tv_uNg8cHthkLTYWgbcoXqO": {
+    "device_id": "207562df36ce55b1",
+    "device_name": "My PC",
+    "ip": "192.168.100.7",
+    "port": 5000,
+    "paired_at": "2025-12-24T09:43:22.951869",
+    "expires_at": "2026-01-23T09:43:22.951875",
+    "status": "confirmed",
+    "synced_files": [],
+    "last_sync": null,
+    "phone_device_id": "phone_1766547827912",
+    "phone_device_name": "Android Phone",
+    "confirmed_at": "2025-12-24T09:43:49.000490",
+    "active": true,
+    "last_seen": "2025-12-24T09:43:49.000505"
+  },
+  "14geRI1YEmYGR3Snve4Go98ocPg_nXSl": {
+    "device_id": "ebfa8513f738f60b",
+    "device_name": "My PC",
+    "ip": "192.168.100.7",
+    "port": 5000,
+    "paired_at": "2025-12-24T09:44:03.470354",
+    "expires_at": "2026-01-23T09:44:03.470359",
+    "status": "pending",
+    "synced_files": [],
+    "last_sync": null
+  },
+  "UdWWxN9vSDscsFzJJ1Ps2tb0CjKRC_RU": {
+    "device_id": "e849a94d1186885d",
+    "device_name": "My PC",
+    "ip": "192.168.100.7",
+    "port": 5000,
+    "paired_at": "2025-12-24T09:44:37.453347",
+    "expires_at": "2026-01-23T09:44:37.453353",
+    "status": "pending",
+    "synced_files": [],
+    "last_sync": null
+  },
+  "QlROr5FIxFYGtMNLnRM0WceB2Iyyc73X": {
+    "device_id": "7e547f670ae28f42",
+    "device_name": "My PC",
+    "ip": "192.168.100.7",
+    "port": 5000,
+    "paired_at": "2025-12-24T10:00:50.159484",
+    "expires_at": "2026-01-23T10:00:50.159489",
+    "status": "pending",
+    "synced_files": [],
+    "last_sync": null
+  },
+  "mTauXx-l6vjaeMJPLJ2Cep11iUqWDTnm": {
+    "device_id": "682cdd0397e350f9",
+    "device_name": "My PC",
+    "ip": "192.168.100.7",
+    "port": 5000,
+    "paired_at": "2025-12-24T10:01:24.276110",
+    "expires_at": "2026-01-23T10:01:24.276115",
+    "status": "pending",
+    "synced_files": [],
+    "last_sync": null
+  },
+  "zTLOZrMiJ6ESbqBeK9pWtpXbDI-jtEJF": {
+    "device_id": "377d20df0e3ca81b",
+    "device_name": "My PC",
+    "ip": "192.168.100.7",
+    "port": 5000,
+    "paired_at": "2025-12-24T10:01:26.405100",
+    "expires_at": "2026-01-23T10:01:26.405102",
+    "status": "confirmed",
+    "synced_files": [],
+    "last_sync": null,
+    "phone_device_id": "phone_1766548899579",
+    "phone_device_name": "Android Phone",
+    "confirmed_at": "2025-12-24T10:01:36.689299",
+    "active": true,
+    "last_seen": "2025-12-24T10:01:36.689318"
+  }
+}

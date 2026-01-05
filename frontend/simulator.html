@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Storage Explorer</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="page">
+    <div class="card">
+      <header>
+        <h1>Storage Explorer</h1>
+        <p class="sub">Learn about phone storage and file management.</p>
+      </header>
+
+      <section class="controls">
+        <div class="field">
+          <button class="btn" id="refresh-btn">Refresh Files</button>
+          <button class="btn muted" id="back-btn">Back to Paths</button>
+        </div>
+      </section>
+
+      <section id="stats" style="margin: 12px 0; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px;">
+        <p style="margin: 0; font-size: 13px;">
+          Files: <strong id="file-count">0</strong> | 
+          Size: <strong id="total-size">0 MB</strong>
+        </p>
+      </section>
+
+      <div class="field">
+        <label for="file-input">Upload Files</label>
+        <input id="file-input" type="file" multiple>
+        <button id="upload-btn" class="btn" style="margin-top:8px">Upload</button>
+      </div>
+
+      <section id="file-list" style="margin-top: 12px;">
+        <h3>Files in Storage</h3>
+        <ul id="files" style="list-style: none; padding: 0; margin: 0;">
+          <li style="padding: 8px; color: rgba(230,238,248,0.5)">No files yet</li>
+        </ul>
+      </section>
+
+      <section id="edu-tips" style="margin-top: 18px; padding: 12px; background: rgba(110,168,254,0.1); border-radius: 8px; border-left: 3px solid var(--accent);">
+        <h4 style="margin-top: 0;">Storage Tips</h4>
+        <ul style="margin: 8px 0; padding-left: 20px;">
+          <li>Photos and documents are typically stored in user-accessible folders.</li>
+          <li>Apps create cache files that can be safely cleared to free space.</li>
+          <li>Private app data is encrypted and inaccessible without permission.</li>
+          <li>Periodically delete files you no longer need to free up storage.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+  <script>const SESSION_TOKEN = "{{ token }}";</script>
+  <script src="/static/js/simulator.js"></script>
+</body>
+</html>
